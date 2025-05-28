@@ -16,6 +16,7 @@ authRouter.use("/signup", async (req, res) => {
     ];
 
      validateSignup(req);
+     console.log("scqaxccx")
 
     const keys = Object.keys(req.body).every((k) => checkKeys.includes(k));
     if (!keys) {
