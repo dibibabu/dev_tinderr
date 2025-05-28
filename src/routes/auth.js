@@ -15,7 +15,7 @@ authRouter.use("/signup", async (req, res) => {
       "password",
     ];
 
-    validateSignup(req);
+     validateSignup(req);
 
     const keys = Object.keys(req.body).every((k) => checkKeys.includes(k));
     if (!keys) {
