@@ -1,22 +1,29 @@
 const express = require("express");
 
-const connectDB= require("./config/database")
+const connectDB = require("./config/database");
 
 const app = express();
 
-app.use('/',(req,res)=>{
+const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
+const requestRouter = require("./routes/request");
 
-    res.send("hello world")
-})
-connectDB().then(()=>{
+const cookieParser = require("cookie-parser");
 
-  console.log("database connected successfully");
-  app.listen(7777, () => {
-    console.log("app is listening to port 7777");
+app.use(express.json());
+app.use(cookieParser());
+
+app.use("/", authRouter);
+app.use("/profile", profileRouter);
+app.use("/request", requestRouter);
+
+connectDB()
+  .then(() => {
+    console.log("database connected successfully");
+    app.listen(7777, () => {
+      console.log("app is listening to port 7777");
+    });
+  })
+  .catch(() => {
+    console.log("database connection error");
   });
-  
-}).catch(()=>{
-  console.log("database connection error");
-  
-})
-
