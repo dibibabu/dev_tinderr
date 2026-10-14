@@ -62,7 +62,7 @@ requestRouter.post("/review/:status/:requestId", userAuth, async (req, res) => {
 
     const connectionRequest=await ConnectionRequest.findOne({
 
-      fromUserId:requestId,
+      _id:requestId,
       toUserId:loginUserId,
       status:"interested"
 

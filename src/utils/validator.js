@@ -9,14 +9,14 @@ const validateSignup = (req) => {
   }
 
   if (!validator.isStrongPassword(data.password)) {
-    throw new Error("password is not strong " + data.password);
+    throw new Error("password is not strong");
   }
 };
 
 
 const validateEditProfileData=(req)=>{
 
-  const allowedFields=["firstName","lastName","email","age","gender"
+  const allowedFields=["firstName","lastName","email","age","gender","about"
 
   ]
 
@@ -24,4 +24,4 @@ const validateEditProfileData=(req)=>{
 
 return isValid
 }
-module.exports = validateSignup,validateEditProfileData;
+module.exports = { validateSignup, validateEditProfileData };
