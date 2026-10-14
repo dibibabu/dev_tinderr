@@ -1,10 +1,10 @@
 const express = require("express");
 const authRouter = express.Router();
-const validateSignup = require("../utils/validator");
+const { validateSignup } = require("../utils/validator");
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 
-authRouter.use("/signup", async (req, res) => {
+authRouter.post("/signup", async (req, res) => {
   try {
     const checkKeys = [
       "firstName",
@@ -41,7 +41,7 @@ authRouter.use("/signup", async (req, res) => {
   }
 });
 
-authRouter.use("/login", async (req, res) => {
+authRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -58,14 +58,14 @@ authRouter.use("/login", async (req, res) => {
     } else {
       const token = await user.getJWT();
       res.cookie("token", token);
-      return res.status(400).send("Login Success");
+      return res.status(200).send(user);
     }
   } catch (error) {
     res.status(400).send(error.message);
   }
 });
 
-authRouter.use("/logout", async (req, res) => {
+authRouter.post("/logout", async (req, res) => {
   try {
     res.cookie("token", null, {
       httpOnly: true,
