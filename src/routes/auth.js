@@ -24,6 +24,12 @@ authRouter.post("/signup", async (req, res) => {
     }
 
     const { firstName, lastName, email, age, gender } = req.body;
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(409).send("Email already exists");
+    }
+
     const encPassword = await bcrypt.hash(req.body.password, 10);
     const user = new User({
       firstName,
@@ -37,6 +43,10 @@ authRouter.post("/signup", async (req, res) => {
     await user.save();
     res.send("user added");
   } catch (error) {
+    // duplicate key from the unique index (two signups racing past the check above)
+    if (error.code === 11000) {
+      return res.status(409).send("Email already exists");
+    }
     res.status(400).send(error.message);
   }
 });
